@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-startup
+spec:
+  containers:
+    - name: demoapp
+      image: oldxu3957/demoapp:v1.0
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 80
+      startupProbe:
+        exec:
+          command:
+          - "/bin/sh"
+          - "-c"
+          - "ps aux | grep demo.py"
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 20
+        failureThreshold: 3

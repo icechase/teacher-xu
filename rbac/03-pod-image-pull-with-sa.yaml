@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-custom-sa
+spec:
+  serviceAccountName: pod-image-pull-sa
+  containers:
+    - name: pod-with-custom-sa
+      image: registry.cn-hangzhou.aliyuncs.com/mancoffee/kaniko
+
+

@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rabbitmq-consumer
+spec:
+  completions: 8     
+  parallelism: 2
+  ttlSecondsAfterFinished: 200
+  activeDeadlineSeconds: 200
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: mq-work
+          image: oldxu3957/rabbit-mq-consumer-job
+          env:
+            - name: BROKER_URL
+              value: amqp://guest:guest@rabbitmq-service:5672
+            - name: QUEUE
+              value: job1

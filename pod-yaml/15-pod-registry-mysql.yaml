@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-zhuru-canshu
+spec:
+  selector:
+    matchLabels:
+      app: tools
+  template:
+    metadata:
+      labels:
+        app: tools
+    spec:
+      containers:
+      - name: register
+        image: oldxu3957/tools:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - "/bin/bash"
+        - "-c"
+        - |
+          mysql -h 192.168.0.51 -uchase -pwaityou -e "create database ${POD_NAME//-/_}" 
+          sleep 100000
+
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 80
+  
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - "/bin/bash"
+              - "-c"
+              - mysql -h 192.168.0.51 -uchase -pwaityou -e "drop database ${POD_NAME//-/_}" 
+

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-test-1
+spec:
+  dnsPolicy: ClusterFirst
+  containers:
+    - name: tools
+      image: oldxu3957/tools
+      ports:
+        - containerPort: 80
+      
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200Mi
+        limits:
+          cpu: 200m
+          memory: 400Mi

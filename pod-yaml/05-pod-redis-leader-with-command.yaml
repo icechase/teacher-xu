@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-redis-leader-command
+spec:
+  containers:
+  - name: redis-server
+    image: redis 
+    ports:
+    - containerPort: 6379
+

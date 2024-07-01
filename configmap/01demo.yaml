@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  host: 0.0.0.0
+  port: '3333'
+  my-server.conf: |
+    server {
+      listen 80;
+      server_name abc.chasecup.com;
+      location / {
+        root /usr/share/nginx/html;
+      } 
+
+    }
+
+  myserver.cfg: |
+    lcation /ngx_status {
+      stub_status;
+      access_log off;
+    }

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+spec:
+  selector: 
+      app: mq
+  ports:
+    - name: rabbbit-mq
+      port: 5672
+      targetPort: 5672

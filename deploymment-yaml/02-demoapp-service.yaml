@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: demoapp-service
+spec:
+  selector:
+    app: demoapp              #service 通过标签选择器,把对应的有这些标签的定义为一组backend.
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    

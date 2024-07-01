@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: cache-volumes
+              mountPath: /data
+      volumes:
+        - name: cache-volumes
+          emptyDir: {}
+        
+
+        
+

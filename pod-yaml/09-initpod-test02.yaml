@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-sysctl
+spec:
+  restartPolicy: Always
+  initContainers:
+  - name: check-mysgl
+    image: oldxu3957/tools
+    command: ["sh", "-c",  "nc -z 192.168.0.51 3306"]
+  - name: sysctl
+    image: oldxu3957/tools
+    command: ["sh", "-c", "sysctl -w net.core.somaxconn=32769; sysctl -w net.ipv4.ip_local_port_range='1024 65000'"]
+    securityContext:
+      privileged: true
+  containers:
+  - name: webapp
+    image: tomcat
+    ports:
+    - containerPort: 8080

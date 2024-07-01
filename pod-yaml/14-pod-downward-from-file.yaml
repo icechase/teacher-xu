@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-down-api-volume
+  labels:
+    app: nginx-app
+    role: backend
+    zone: beijing
+spec:
+  containers:
+    - name: pod-down-api
+      image: nginx
+
+      volumeMounts:
+      - name: podinfo
+        mountPath: /etc/info
+      
+  
+      resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            cpu: 200m
+            memory: 1000Mi
+  
+  volumes:
+  - name: podinfo
+    downwardAPI:
+      items:
+        - path: pod_name
+          fieldRef:
+            fieldPath: metadata.name
+        
+        - path: pod_namespace
+          fieldRef:
+            fieldPath: metadata.namespace
+
+        - path: pod_labels
+          fieldRef:
+            fieldPath: metadata.labels
+
+        - path: req_cpu
+          resourceFieldRef:
+            containerName: pod-down-api
+            resource: requests.cpu
+
+        - path: limit_cpu
+          resourceFieldRef:
+            containerName: pod-down-api
+            resource: limits.memory
+            
+

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-custom-sa
+
+spec:
+  serviceAccountName: pod-sa
+  containers:
+    - name: pod-with-custom-sa
+      image: nginx
+

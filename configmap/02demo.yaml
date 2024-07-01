@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo--3
+data:
+  abc: "123"
+  xxx: "322"
+

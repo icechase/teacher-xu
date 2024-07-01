@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-localtime
+spec:
+  containers:
+    - name: web
+      image: nginx:1.16
+      imagePullPolicy: IfNotPresent
+      
+      volumeMounts:
+        - name: timezone
+          mountPath: /etc/localtime
+
+
+  volumes:
+    - name: timezone
+      hostPath:
+        path: /etc/localtime

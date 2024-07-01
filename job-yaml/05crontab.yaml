@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjb-demo
+spec:
+  schedule: "*/5 * * * *"
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+
+  jobTemplate:
+    spec:
+      parallelism: 1
+      completions: 1
+      ttlSecondsAfterFinished: 200
+
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: mycronjb
+              image: oldxu3957/tools
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "echo you suck"

@@ -1,0 +1,71 @@
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wordpress-secret
+stringData:
+  DB_NAME: wordpress
+  DB_USER: root
+  DB_PASSWORD: waityou
+  DB_HOST: mysql-0.mysql-svc.default.svc.cluster.local
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-deploy
+spec:
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      imagePullSecrets:
+        - name: aliyun-secret
+      containers:
+        - name: wordpress
+          image: registry.cn-hangzhou.aliyuncs.com/mancoffee/wordpress:v6.0-1.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: wordpress-secret
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d/
+            - name: videos
+              mountPath: /usr/share/nginx/html/wp-content/uploads
+          resources:
+            requests:
+              cpu: 200m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1000Mi
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-config
+        - name: videos
+          persistentVolumeClaim:
+            claimName: wordpress-data
+
+        
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-svc
+spec:
+  selector:
+    app: wordpress
+  ports:
+    - port: 80
+      targetPort: 80

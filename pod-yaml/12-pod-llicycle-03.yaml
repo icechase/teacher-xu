@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-lifecycle-02
+  labels:
+    app: tomcat
+spec:
+  containers:
+    - name: tomcat-web2
+      image: tomcat
+      ports:
+        - containerPort: 8080
+      lifecycle:
+        postStart:
+          exec:
+            command:
+            - "/bin/bash"
+            - "-c"
+            - "cp -pr /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps/"
+        preStop:
+          exec:
+            command:
+            - "/bin/bash"
+            - "-c"
+            - "/usr/local/tomcat/bin/shutdown.sh"
+      resources:
+        requests:
+          cpu: 100m
+          memory: 500Mi
+        limits:
+          cpu: 200m
+          memory: 1000Mi
+            

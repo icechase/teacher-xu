@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring
+  template:
+    metadata:
+      labels:
+        app: spring
+    spec:
+      imagePullSecrets:
+        - name: aliyun-secret
+      containers:
+        - name: springboot
+          image: registry.cn-hangzhou.aliyuncs.com/mancoffee/spring-boot:v1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+
+          resources:
+            requests:
+              cpu: 400m
+              memory: 140Mi
+            limits:
+              cpu: 1000m
+              memory: 500Mi
